@@ -1,9 +1,15 @@
 import App from './App'
+import {t} from "@/common/i18n.js";
 
 // #ifndef VUE3
 import Vue from 'vue'
 Vue.config.productionTip = false
 App.mpType = 'app'
+
+import uniIcons from "@/components/uni-icons/uni-icons.vue";
+Vue.component('uni-icons', uniIcons);
+import uniBadge from "@/components/uni-badge/uni-badge.vue";
+Vue.component('uni-badge', uniBadge);
 
 try {
   function isPromise(obj) {
@@ -43,6 +49,7 @@ app.$mount()
 import { createSSRApp } from 'vue'
 export function createApp() {
   const app = createSSRApp(App)
+  app.provide('$t', t);
   return {
     app
   }

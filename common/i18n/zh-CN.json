@@ -1,0 +1,10 @@
+{
+	"login": "登录",
+	"register": "注册账号",
+	"username": "用户名",
+	"password": "密码",
+	"confirmPassword": "确认密码",
+	"usernameCantLess": "用户名不能少于 {0} 位",
+	"passwordCantLess": "密码不能少于 {0} 位",
+	"passwordNotMatch": "两次密码不匹配"
+}

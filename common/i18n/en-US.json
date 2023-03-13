@@ -1,0 +1,10 @@
+{
+	"login": "Login",
+	"register": "Register",
+	"username": "Username",
+	"password": "Password",
+	"confirmPassword": "Confirm Password",
+	"usernameCantLess": "Username cannot less than {0} characters",
+	"passwordCantLess": "Password cannot less than {0} characters",
+	"passwordNotMatch": "Two passwords is not match"
+}

@@ -1,0 +1,10 @@
+{
+	"login": "ចូល",
+	"register": "ចុះឈ្មោះ",
+	"username": "ឈ្មោះ",
+	"password": "ពាក្យសម្ងាត់",
+	"confirmPassword": "ពាក្យសម្ងាត់",
+	"usernameCantLess": "Username cannot less than {0} characters",
+	"passwordCantLess": "Password cannot less than {0} characters",
+	"passwordNotMatch": "two passwords is not match"
+}
