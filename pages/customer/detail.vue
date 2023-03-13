@@ -2,32 +2,35 @@
 	<view>
 		<view class="uni-common-mt">
 			<view class="uni-form-item uni-column">
-				<view class="title">Customer Name</view>
+				<view class="title">{{$t('customerName')}}</view>
 				<input class="uni-input" focus placeholder="" v-model="mPostData.name" required />
 			</view>
 			<view class="uni-form-item uni-column">
-				<view class="title">Telephone Number</view>
+				<view class="title">{{$t('phoneNumber')}}</view>
 				<input class="uni-input" placeholder="" v-model="mPostData.phone" />
 			</view>
 			<view class="uni-form-item uni-column">
-				<view class="title">Remark</view>
+				<view class="title">{{$t('remark')}}</view>
 				<input class="uni-input" placeholder="" v-model="mPostData.remark" />
 			</view>
 			<view class="uni-padding-wrap uni-common-mt">
 				<button type="primary" :disabled="mOtherParam.bLoading" @click="submit()">
-					<span v-if="mLoadParam.action === 'add'">Add New</span>
-					<span v-else-if="mLoadParam.action === 'edit'">Save</span>
+					<span v-if="mLoadParam.action === 'add'">{{$t('add')}}</span>
+					<span v-else-if="mLoadParam.action === 'edit'">{{$t('save')}}</span>
 					<span v-else>Submit</span>
 				</button>
 			</view>
 			<view class="uni-padding-wrap uni-common-mt" v-if="mLoadParam.action === 'edit'">
-				<button type="warn" :disabled="mOtherParam.bLoading" @click="submit('del')">Delete</button>
+				<button type="warn" :disabled="mOtherParam.bLoading" @click="submit('del')">{{$t('delete')}}</button>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		fGetTransResult,
+	} from "@/common/i18n.js";
 	import {
 		getRequest,
 		postRequest,
@@ -66,6 +69,10 @@
 			uni.stopPullDownRefresh();
 		},
 		methods: {
+			$t(key) {
+				//console.log(this.post.language);
+				return fGetTransResult(key, 'customer');
+			},
 			getUrl(_action) {
 				const aUrl = ['/panel/front/customer'];
 				if (this.mLoadParam.id) {
@@ -80,7 +87,7 @@
 			async reload() {
 				if (this.mLoadParam.action === 'add') {
 					uni.setNavigationBarTitle({
-						title: 'New Customer'
+						title: this.$t('newCustomer')
 					});
 					if (this.mLoadParam.name) {
 						this.mPostData.name = this.mLoadParam.name;
@@ -89,7 +96,7 @@
 				}
 				if (this.mLoadParam.action === 'edit') {
 					uni.setNavigationBarTitle({
-						title: 'Edit Customer'
+						title: this.$t('editCustomer')
 					});
 					const apiResData = await getRequest(this.getUrl('detail'), {});
 					if (typeof(apiResData) === 'object') {
@@ -104,12 +111,12 @@
 			},
 			async submit(_action) {
 				if (_action === 'del') {
-					if (!await showConfirm(`are you sure delete [${this.mPostData.name}]`)) {
+					if (!await showConfirm(this.$t(['deleteConfirm', this.mPostData.name]))) {
 						return;
 					}
 				} else {
 					if (this.mPostData.name.length < 3) {
-						return showAlert("Customer name cannot less than 3 characters\r\n(客户名称不能少于3位)");
+						return showAlert(this.$t(['cantLessChar', this.$t('customerName'), 3]));
 					}
 				}
 				this.mOtherParam.bLoading = true;

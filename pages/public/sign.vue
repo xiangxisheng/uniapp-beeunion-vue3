@@ -2,22 +2,22 @@
 	<view>
 		<view class="uni-common-mt">
 			<view class="uni-form-item uni-column">
-				<view class="title">{{$t('username')}}</view>
+				<view class="title">{{$t('username')}}:</view>
 				<input class="uni-input" focus placeholder="" v-model="post.username" required />
 			</view>
 			<view class="uni-form-item uni-column">
-				<view class="title">{{$t('password')}}</view>
+				<view class="title">{{$t('password')}}:</view>
 				<input class="uni-input" type="password" placeholder="" v-model="post.password" required />
 			</view>
 			<view class="uni-form-item uni-column" v-if="action === 'register'">
-				<view class="title">{{$t('confirmPassword')}}</view>
+				<view class="title">{{$t('confirmPassword')}}:</view>
 				<input class="uni-input" type="password" placeholder="" v-model="password2" required />
 			</view>
 			<view class="uni-form-item uni-column">
 				<view class="title">Language / 语言选择</view>
 				<radio-group class="uni-input" @change="languageChange">
-					<label v-for="(item, index) in language.items" :key="item.value">
-						<radio :value="item.value" :checked="item.value === language.current" />
+					<label v-for="(item, index) in languageItems" :key="item.value">
+						<radio :value="item.value" :checked="item.value === post.language" />
 						{{ item.title }}
 					</label>
 				</radio-group>
@@ -38,16 +38,16 @@
 
 <script>
 	import {
-		inject
-	} from 'vue';
-	import {
 		postRequest,
 		navigateBack,
 		showAlert,
 	} from '@/common/request.js';
 	import {
-		fGetRadioItems,
-	} from '@/common/i18n.js';
+		fGetTransResult,
+		fGetLanguageItems,
+		fGetCurrentLocale,
+		fSetCurrentLocale,
+	} from "@/common/i18n.js";
 	export default {
 		data() {
 			return {
@@ -57,16 +57,14 @@
 				post: {
 					username: '',
 					password: '',
+					language: null,
 				},
-				language: {
-					current: 'zh-CN',
-					items: [],
-				},
+				languageItems: [],
 			}
 		},
 		async onLoad() {
-			this.$t = inject('$t');
-			this.language.items = fGetRadioItems();
+			this.post.language = fGetCurrentLocale();
+			this.languageItems = fGetLanguageItems();
 		},
 		onPullDownRefresh() {
 			//下拉
@@ -74,6 +72,10 @@
 			uni.stopPullDownRefresh();
 		},
 		methods: {
+			$t(key) {
+				console.log(this.post.language);
+				return fGetTransResult(key, 'sign');
+			},
 			async fetchData() {
 				//alert('fetchData()');
 				/**
@@ -98,8 +100,12 @@
 				this.bLoading = false;
 			},
 			languageChange(s) {
-				console.log(s)
-			}
+				console.log(s.detail.value);
+				this.post.language = s.detail.value;
+				//const aa = inject('fSetCurrentLocale');
+				fSetCurrentLocale(this.post.language);
+				//uni.setStorageSync('locale', this.post.language);
+			},
 		}
 	}
 </script>

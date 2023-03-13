@@ -1,7 +1,7 @@
 import en_US from '@/common/i18n/en-US.json';
 import zh_CN from '@/common/i18n/zh-CN.json';
 import km_KH from '@/common/i18n/km-KH.json';
-const lang = {
+const mLang = {
 	'en-US': {
 		title: 'English',
 		lang: en_US,
@@ -15,10 +15,10 @@ const lang = {
 		lang: km_KH,
 	},
 };
-export function fGetRadioItems() {
+export function fGetLanguageItems() {
 	const arr = [];
-	for (const k in lang) {
-		const row = lang[k];
+	for (const k in mLang) {
+		const row = mLang[k];
 		arr.push({
 			value: k,
 			title: row.title
@@ -26,21 +26,53 @@ export function fGetRadioItems() {
 	}
 	return arr;
 }
-export function t(key) {
-	const locale = 'en-US';
-	return lang[locale].lang[key];
+
+function replaceAll(s0, s1, s2) {
+	return s0.replace(new RegExp(s1, "gm"), s2);
 }
-export function fGetVueI18nConfig() {
-	const i18nConfig = {
-		locale: 'en-US',
-		messages: {},
-	};
+
+function fGetFormatString(format, vals) {
+	if (typeof(vals) === 'string') {
+		return format;
+	}
+	if (typeof(vals) === 'object') {
+		vals.shift();
+		var out = format;
+		for (const k in vals) {
+			console.log(out);
+			out = replaceAll(out, '\\{' + k + '\\}', vals[k]);
+		}
+		return out;
+	}
+	return '-';
+}
+export function fGetTransResult(vals, group) {
+	const sKey = typeof(vals) === 'string' ? vals : vals[0];
+	const locale = fGetCurrentLocale();
+	if (!mLang.hasOwnProperty(locale)) {
+		return '-';
+	}
+	const lang = mLang[locale].lang;
+	if (group) {
+		if (lang.hasOwnProperty(group) && lang[group].hasOwnProperty(sKey)) {
+			return fGetFormatString(lang[group][sKey], vals);
+		}
+	}
+	group = 'common';
+	if (lang.hasOwnProperty(group) && lang[group].hasOwnProperty(sKey)) {
+		return fGetFormatString(lang[group][sKey], vals);
+	}
+	return sKey;
+}
+export function fGetCurrentLocale() {
 	const locale = uni.getStorageSync('locale');
 	if (locale) {
-		i18nConfig.locale = locale;
+		return locale;
 	}
-	for (const k in lang) {
-		i18nConfig.messages[k] = './common/i18n/' + k + '.json';
+	for (const k in mLang) {
+		return k;
 	}
-	return i18nConfig;
+}
+export function fSetCurrentLocale(val) {
+	uni.setStorageSync('locale', val);
 }

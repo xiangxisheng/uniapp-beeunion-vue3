@@ -1,3 +1,7 @@
+import {
+	fGetTransResult,
+} from "@/common/i18n.js";
+
 export function fGetTimeWithRand() {
 	//返回一个29位的随机数字（前面13位是时间戳）
 	const a = [];
@@ -58,7 +62,8 @@ export function fRequest(method, path, data) {
 				//console.log(res);
 				const mData = res.data;
 				if (mData.message) {
-					await showAlert(mData.message);
+					const msg = fGetTransResult(mData.message);
+					await showAlert(msg);
 				}
 				if (res.statusCode === 401) {
 					uni.navigateTo({

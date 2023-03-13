@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="uni-form-item uni-column">
-			<input class="uni-input" focus placeholder="input for search" v-model="search.name" @input="getList()" />
+			<input class="uni-input" focus :placeholder="$t('search')" v-model="search.name" @input="getList()" />
 		</view>
 		<uni-list>
 			<uni-list-item showArrow clickable @click="navigate_detail_edit(item.id)" v-for="item of apiResData.items"
@@ -37,6 +37,9 @@
 </template>
 <script>
 	import {
+		fGetTransResult,
+	} from "@/common/i18n.js";
+	import {
 		getRequest
 	} from '@/common/request.js';
 	import uniList from "@/components/uni-list/uni-list.vue";
@@ -58,6 +61,9 @@
 			uniListItem,
 		},
 		async created() {
+			uni.setNavigationBarTitle({
+				title: this.$t('myCustomer'),
+			});
 			await this.getList();
 		},
 		onNavigationBarButtonTap(e) {
@@ -72,6 +78,10 @@
 			uni.stopPullDownRefresh();
 		},
 		methods: {
+			$t(key) {
+				//console.log(this.post.language);
+				return fGetTransResult(key, 'customer');
+			},
 			async getList() {
 				try {
 					this.apiResData = await getRequest("/panel/front/customer/list", this.search);

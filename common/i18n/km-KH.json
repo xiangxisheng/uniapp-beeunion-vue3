@@ -1,10 +1,29 @@
 {
-	"login": "ចូល",
-	"register": "ចុះឈ្មោះ",
-	"username": "ឈ្មោះ",
-	"password": "ពាក្យសម្ងាត់",
-	"confirmPassword": "ពាក្យសម្ងាត់",
-	"usernameCantLess": "Username cannot less than {0} characters",
-	"passwordCantLess": "Password cannot less than {0} characters",
-	"passwordNotMatch": "two passwords is not match"
+	"sign": {
+		"login": "ចូល",
+		"register": "ចុះឈ្មោះ",
+		"username": "ឈ្មោះ",
+		"password": "ពាក្យសម្ងាត់",
+		"confirmPassword": "ពាក្យសម្ងាត់",
+		"usernameCantLess": "Username cannot less than {0} characters",
+		"passwordCantLess": "Password cannot less than {0} characters",
+		"passwordNotMatch": "two passwords is not match"
+	},
+	"customer": {
+		"search": "input for search",
+		"myCustomer": "My Customer",
+		"newCustomer": "New Customer",
+		"editCustomer": "Edit Customer",
+		"deleteConfirm": "Are you sure delete [{0}]",
+		"cantLessChar": "{0} Cannot less than {1} characters",
+		"customerName": "Customer Name",
+		"phoneNumber": "Telephone Number",
+		"remark": "Remark",
+		"save": "Save",
+		"add": "Add New",
+		"delete": "Delete"
+	},
+	"me": {
+		"logout": "Logout"
+	}
 }

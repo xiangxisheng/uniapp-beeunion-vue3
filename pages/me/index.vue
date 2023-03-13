@@ -8,13 +8,17 @@
 				<text class="title">{{ mUserInfo.username }}</text>
 			</view>
 			<view class="uni-padding-wrap uni-common-mt">
-				<button type="primary" :disabled="mOtherParam.bLoading" @click="submit('logout')">Logout</button>
+				<button type="primary" :disabled="mOtherParam.bLoading"
+					@click="submit('logout')">{{$t('logout')}}</button>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		fGetTransResult,
+	} from "@/common/i18n.js";
 	import {
 		getRequest,
 		postRequest,
@@ -41,6 +45,10 @@
 			uni.stopPullDownRefresh();
 		},
 		methods: {
+			$t(key) {
+				//console.log(this.post.language);
+				return fGetTransResult(key, 'me');
+			},
 			async reload() {
 				try {
 					const result = await getRequest('/panel/getUserInfo');

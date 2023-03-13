@@ -1,5 +1,4 @@
 import App from './App'
-import {t} from "@/common/i18n.js";
 
 // #ifndef VUE3
 import Vue from 'vue'
@@ -49,7 +48,6 @@ app.$mount()
 import { createSSRApp } from 'vue'
 export function createApp() {
   const app = createSSRApp(App)
-  app.provide('$t', t);
   return {
     app
   }
