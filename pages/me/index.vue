@@ -45,9 +45,12 @@
 			uni.stopPullDownRefresh();
 		},
 		methods: {
-			$t(key) {
-				//console.log(this.post.language);
-				return fGetTransResult(key, 'me');
+			$t(_key, _param, _group) {
+				console.log(this.post.language);
+				if (_group === undefined) {
+					_group = 'me';
+				}
+				return fGetTransResult(_key, _param, _group);
 			},
 			async reload() {
 				try {

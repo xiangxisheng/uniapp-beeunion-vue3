@@ -31,36 +31,31 @@ function replaceAll(s0, s1, s2) {
 	return s0.replace(new RegExp(s1, "gm"), s2);
 }
 
-function fGetFormatString(format, vals) {
-	if (typeof(vals) === 'string') {
-		return format;
-	}
-	if (typeof(vals) === 'object') {
-		vals.shift();
-		var out = format;
-		for (const k in vals) {
+function fGetFormatString(sFormat, aParam) {
+	if (aParam) {
+		var out = sFormat;
+		for (const k in aParam) {
 			console.log(out);
-			out = replaceAll(out, '\\{' + k + '\\}', vals[k]);
+			out = replaceAll(out, '\\{' + k + '\\}', aParam[k]);
 		}
 		return out;
 	}
-	return '-';
+	return sFormat;
 }
-export function fGetTransResult(vals, group) {
-	const sKey = typeof(vals) === 'string' ? vals : vals[0];
+export function fGetTransResult(sKey, aParam, sGroup) {
 	const locale = fGetCurrentLocale();
 	if (!mLang.hasOwnProperty(locale)) {
 		return '-';
 	}
 	const lang = mLang[locale].lang;
-	if (group) {
-		if (lang.hasOwnProperty(group) && lang[group].hasOwnProperty(sKey)) {
-			return fGetFormatString(lang[group][sKey], vals);
+	if (sGroup) {
+		if (lang.hasOwnProperty(sGroup) && lang[sGroup].hasOwnProperty(sKey)) {
+			return fGetFormatString(lang[sGroup][sKey], aParam);
 		}
 	}
-	group = 'common';
-	if (lang.hasOwnProperty(group) && lang[group].hasOwnProperty(sKey)) {
-		return fGetFormatString(lang[group][sKey], vals);
+	sGroup = 'common';
+	if (lang.hasOwnProperty(sGroup) && lang[sGroup].hasOwnProperty(sKey)) {
+		return fGetFormatString(lang[sGroup][sKey], aParam);
 	}
 	return sKey;
 }

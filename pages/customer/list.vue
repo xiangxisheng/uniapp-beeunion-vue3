@@ -31,7 +31,7 @@
 				</template>
 			</uni-list-item>
 		</uni-list>
-		<button @click="navigate_detail_add(search.name)" v-if="search.name !== ''">New customer
+		<button @click="navigate_detail_add(search.name)" v-if="search.name !== ''">{{$t('newCustomer')}}
 			"{{ search.name }}"</button>
 	</view>
 </template>
@@ -78,9 +78,12 @@
 			uni.stopPullDownRefresh();
 		},
 		methods: {
-			$t(key) {
+			$t(_key, _param, _group) {
 				//console.log(this.post.language);
-				return fGetTransResult(key, 'customer');
+				if (_group === undefined) {
+					_group = 'customer';
+				}
+				return fGetTransResult(_key, _param, _group);
 			},
 			async getList() {
 				try {

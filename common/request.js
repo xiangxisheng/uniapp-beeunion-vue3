@@ -57,7 +57,6 @@ export function fRequest(method, path, data) {
 			data,
 			header,
 			method,
-			withCredentials: true,
 			success: async (res) => {
 				//console.log(res);
 				const mData = res.data;

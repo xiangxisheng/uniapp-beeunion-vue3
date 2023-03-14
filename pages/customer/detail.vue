@@ -69,9 +69,12 @@
 			uni.stopPullDownRefresh();
 		},
 		methods: {
-			$t(key) {
+			$t(_key, _param, _group) {
 				//console.log(this.post.language);
-				return fGetTransResult(key, 'customer');
+				if (_group === undefined) {
+					_group = 'customer';
+				}
+				return fGetTransResult(_key, _param, _group);
 			},
 			getUrl(_action) {
 				const aUrl = ['/panel/front/customer'];
@@ -111,12 +114,12 @@
 			},
 			async submit(_action) {
 				if (_action === 'del') {
-					if (!await showConfirm(this.$t(['deleteConfirm', this.mPostData.name]))) {
+					if (!await showConfirm(this.$t('deleteConfirm', [this.mPostData.name]))) {
 						return;
 					}
 				} else {
 					if (this.mPostData.name.length < 3) {
-						return showAlert(this.$t(['cantLessChar', this.$t('customerName'), 3]));
+						return showAlert(this.$t('cantLessChar', [this.$t('customerName'), 3]));
 					}
 				}
 				this.mOtherParam.bLoading = true;

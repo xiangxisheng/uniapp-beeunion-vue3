@@ -74,9 +74,12 @@
 			uni.stopPullDownRefresh();
 		},
 		methods: {
-			$t(key) {
+			$t(_key, _param, _group) {
 				console.log(this.post.language);
-				return fGetTransResult(key, 'sign');
+				if (_group === undefined) {
+					_group = 'sign';
+				}
+				return fGetTransResult(_key, _param, _group);
 			},
 			fRemoveCurrentLocale() {
 				fRemoveCurrentLocale();
@@ -88,10 +91,10 @@
 				 * 客户端对账号信息进行一些必要的校验。
 				 */
 				if (this.post.username.length < 3) {
-					return showAlert(this.$t(['cantLessChar', this.$t('username'), 3]));
+					return showAlert(this.$t('cantLessChar', [this.$t('username'), 3]));
 				}
 				if (this.post.password.length < 6) {
-					return showAlert(this.$t(['cantLessChar', this.$t('password'), 6]));
+					return showAlert(this.$t('cantLessChar', [this.$t('password'), 6]));
 				}
 				if (this.action === 'register' && this.post.password != this.password2) {
 					return showAlert(this.$t('passwordNotMatch'));
