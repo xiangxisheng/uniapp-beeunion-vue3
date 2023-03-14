@@ -1,12 +1,14 @@
 {
+	"common": {
+		"resetLocale": "Reset",
+		"cantLessChar": "{0} Cannot less than {1} characters"
+	},
 	"sign": {
 		"login": "Login",
 		"register": "Register",
 		"username": "Username",
 		"password": "Password",
 		"confirmPassword": "Confirm Password",
-		"usernameCantLess": "Username cannot less than {0} characters",
-		"passwordCantLess": "Password cannot less than {0} characters",
 		"passwordNotMatch": "Two passwords is not match"
 	},
 	"customer": {
@@ -15,7 +17,6 @@
 		"newCustomer": "New Customer",
 		"editCustomer": "Edit Customer",
 		"deleteConfirm": "Are you sure delete [{0}]",
-		"cantLessChar": "{0} Cannot less than {1} characters",
 		"customerName": "Customer Name",
 		"phoneNumber": "Telephone Number",
 		"remark": "Remark",

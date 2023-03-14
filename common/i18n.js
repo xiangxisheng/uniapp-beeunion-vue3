@@ -65,9 +65,27 @@ export function fGetTransResult(vals, group) {
 	return sKey;
 }
 export function fGetCurrentLocale() {
+	// locale = lang code(iso639) + country code(iso3166)
 	const locale = uni.getStorageSync('locale');
-	if (locale) {
+	if (locale && mLang.hasOwnProperty(locale)) {
 		return locale;
+	}
+	var navLang = navigator.language || navigator.userLanguage;
+	if (mLang.hasOwnProperty(navLang)) {
+		return navLang;
+	}
+	const locale0 = navLang.split('-')[0];
+	if (locale0 === 'en') {
+		navLang = 'en-US';
+	}
+	if (locale0 === 'km') {
+		navLang = 'km-KH';
+	}
+	if (locale0 === 'zh') {
+		navLang = 'zh-CN';
+	}
+	if (mLang.hasOwnProperty(navLang)) {
+		return navLang;
 	}
 	for (const k in mLang) {
 		return k;
@@ -75,4 +93,7 @@ export function fGetCurrentLocale() {
 }
 export function fSetCurrentLocale(val) {
 	uni.setStorageSync('locale', val);
+}
+export function fRemoveCurrentLocale() {
+	uni.removeStorageSync('locale');
 }

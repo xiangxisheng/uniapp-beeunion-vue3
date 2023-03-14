@@ -20,6 +20,7 @@
 						<radio :value="item.value" :checked="item.value === post.language" />
 						{{ item.title }}
 					</label>
+					<a href="javascript:void(0)" @click="fRemoveCurrentLocale()">{{$t('resetLocale')}}</a>
 				</radio-group>
 			</view>
 			<view class="uni-padding-wrap uni-common-mt">
@@ -47,6 +48,7 @@
 		fGetLanguageItems,
 		fGetCurrentLocale,
 		fSetCurrentLocale,
+		fRemoveCurrentLocale,
 	} from "@/common/i18n.js";
 	export default {
 		data() {
@@ -76,16 +78,20 @@
 				console.log(this.post.language);
 				return fGetTransResult(key, 'sign');
 			},
+			fRemoveCurrentLocale() {
+				fRemoveCurrentLocale();
+				this.post.language = fGetCurrentLocale();
+			},
 			async fetchData() {
 				//alert('fetchData()');
 				/**
 				 * 客户端对账号信息进行一些必要的校验。
 				 */
 				if (this.post.username.length < 3) {
-					return showAlert(this.$t(['usernameCantLess', 3]));
+					return showAlert(this.$t(['cantLessChar', this.$t('username'), 3]));
 				}
 				if (this.post.password.length < 6) {
-					return showAlert(this.$t(['passwordCantLess', 6]));
+					return showAlert(this.$t(['cantLessChar', this.$t('password'), 6]));
 				}
 				if (this.action === 'register' && this.post.password != this.password2) {
 					return showAlert(this.$t('passwordNotMatch'));
