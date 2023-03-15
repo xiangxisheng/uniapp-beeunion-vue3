@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="uni-form-item uni-column">
-			<input class="uni-input" focus :placeholder="$t('search')" v-model="search.name" @input="getList()" />
+			<input class="uni-input" focus :placeholder="$t('customer.search')" v-model="search.name" @input="getList()" />
 		</view>
 		<uni-list>
 			<uni-list-item showArrow clickable @click="navigate_detail_edit(item.id)" v-for="item of apiResData.items"
@@ -31,7 +31,7 @@
 				</template>
 			</uni-list-item>
 		</uni-list>
-		<button @click="navigate_detail_add(search.name)" v-if="search.name !== ''">{{$t('newCustomer')}}
+		<button @click="navigate_detail_add(search.name)" v-if="search.name !== ''">{{$t('customer.newCustomer')}}
 			"{{ search.name }}"</button>
 	</view>
 </template>
@@ -62,7 +62,7 @@
 		},
 		async created() {
 			uni.setNavigationBarTitle({
-				title: this.$t('myCustomer'),
+				title: this.$t('customer.myCustomer'),
 			});
 			await this.getList();
 		},
@@ -78,12 +78,8 @@
 			uni.stopPullDownRefresh();
 		},
 		methods: {
-			$t(_key, _param, _group) {
-				//console.log(this.post.language);
-				if (_group === undefined) {
-					_group = 'customer';
-				}
-				return fGetTransResult(_key, _param, _group);
+			$t(_formatpath, _param) {
+				return fGetTransResult(_formatpath, _param);
 			},
 			async getList() {
 				try {

@@ -1,4 +1,5 @@
 import {
+	fGetCurrentLocale,
 	fGetTransResult,
 } from "@/common/i18n.js";
 
@@ -52,8 +53,10 @@ export function fRequest(method, path, data) {
 				url: '/pages/public/sign',
 			});
 		}
+		const locale = fGetCurrentLocale();
+		const url = `${window.config.api_url}${path}?locale=${locale}`;
 		uni.request({
-			url: 'http://5.28.39.4:9000/bee/api' + path,
+			url,
 			data,
 			header,
 			method,

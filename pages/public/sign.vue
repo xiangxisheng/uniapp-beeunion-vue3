@@ -2,36 +2,36 @@
 	<view>
 		<view class="uni-common-mt">
 			<view class="uni-form-item uni-column">
-				<view class="title">{{$t('username')}}:</view>
+				<view class="title">{{$t('sign.username')}}:</view>
 				<input class="uni-input" focus placeholder="" v-model="post.username" required />
 			</view>
 			<view class="uni-form-item uni-column">
-				<view class="title">{{$t('password')}}:</view>
+				<view class="title">{{$t('sign.password')}}:</view>
 				<input class="uni-input" type="password" placeholder="" v-model="post.password" required />
 			</view>
 			<view class="uni-form-item uni-column" v-if="action === 'register'">
-				<view class="title">{{$t('confirmPassword')}}:</view>
+				<view class="title">{{$t('sign.confirmPassword')}}:</view>
 				<input class="uni-input" type="password" placeholder="" v-model="password2" required />
 			</view>
 			<view class="uni-form-item uni-column">
 				<view class="title">Language / 语言选择</view>
 				<radio-group class="uni-input" @change="languageChange">
-					<label v-for="(item, index) in languageItems" :key="item.value">
-						<radio :value="item.value" :checked="item.value === post.language" />
+					<label v-for="(item, index) in aLocales" :key="item.locale">
+						<radio :value="item.locale" :checked="item.locale === post.language" />
 						{{ item.title }}
 					</label>
-					<a href="javascript:void(0)" @click="fRemoveCurrentLocale()">{{$t('resetLocale')}}</a>
+					<a href="javascript:void(0)" @click="fResetLocale()">{{$t('common.resetLocale')}}</a>
 				</radio-group>
 			</view>
 			<view class="uni-padding-wrap uni-common-mt">
 				<button type="primary" :disabled="bLoading" @click="fetchData()"
-					v-if="action === 'login'">{{$t('login')}}</button>
+					v-if="action === 'login'">{{$t('sign.login')}}</button>
 				<button type="primary" :disabled="bLoading" @click="fetchData()"
-					v-if="action === 'register'">{{$t('register')}}</button>
+					v-if="action === 'register'">{{$t('sign.register')}}</button>
 			</view>
 			<view class="uni-padding-wrap uni-common-mt">
-				<button @click="action = 'register'" v-if="action === 'login'">{{$t('register')}}</button>
-				<button @click="action = 'login'" v-if="action === 'register'">{{$t('login')}}</button>
+				<button @click="action = 'register'" v-if="action === 'login'">{{$t('sign.register')}}</button>
+				<button @click="action = 'login'" v-if="action === 'register'">{{$t('sign.login')}}</button>
 			</view>
 		</view>
 	</view>
@@ -45,7 +45,7 @@
 	} from '@/common/request.js';
 	import {
 		fGetTransResult,
-		fGetLanguageItems,
+		fGetLocales,
 		fGetCurrentLocale,
 		fSetCurrentLocale,
 		fRemoveCurrentLocale,
@@ -61,12 +61,12 @@
 					password: '',
 					language: null,
 				},
-				languageItems: [],
+				aLocales: [],
 			}
 		},
 		async onLoad() {
 			this.post.language = fGetCurrentLocale();
-			this.languageItems = fGetLanguageItems();
+			this.aLocales = fGetLocales();
 		},
 		onPullDownRefresh() {
 			//下拉
@@ -74,16 +74,17 @@
 			uni.stopPullDownRefresh();
 		},
 		methods: {
-			$t(_key, _param, _group) {
+			$t(_formatpath, _param) {
 				console.log(this.post.language);
-				if (_group === undefined) {
-					_group = 'sign';
-				}
-				return fGetTransResult(_key, _param, _group);
+				return fGetTransResult(_formatpath, _param);
 			},
-			fRemoveCurrentLocale() {
+			fResetLocale() {
 				fRemoveCurrentLocale();
 				this.post.language = fGetCurrentLocale();
+			},
+			languageChange(s) {
+				this.post.language = s.detail.value;
+				fSetCurrentLocale(this.post.language);
 			},
 			async fetchData() {
 				//alert('fetchData()');
@@ -91,13 +92,13 @@
 				 * 客户端对账号信息进行一些必要的校验。
 				 */
 				if (this.post.username.length < 3) {
-					return showAlert(this.$t('cantLessChar', [this.$t('username'), 3]));
+					return showAlert(this.$t('common.cantLessChar', [this.$t('sign.username'), 3]));
 				}
 				if (this.post.password.length < 6) {
-					return showAlert(this.$t('cantLessChar', [this.$t('password'), 6]));
+					return showAlert(this.$t('common.cantLessChar', [this.$t('sign.password'), 6]));
 				}
 				if (this.action === 'register' && this.post.password != this.password2) {
-					return showAlert(this.$t('passwordNotMatch'));
+					return showAlert(this.$t('sign.passwordNotMatch'));
 				}
 				this.bLoading = true;
 				try {
@@ -107,13 +108,6 @@
 					console.log(errno);
 				}
 				this.bLoading = false;
-			},
-			languageChange(s) {
-				console.log(s.detail.value);
-				this.post.language = s.detail.value;
-				//const aa = inject('fSetCurrentLocale');
-				fSetCurrentLocale(this.post.language);
-				//uni.setStorageSync('locale', this.post.language);
 			},
 		}
 	}

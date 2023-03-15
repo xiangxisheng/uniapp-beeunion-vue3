@@ -9,7 +9,7 @@
 			</view>
 			<view class="uni-padding-wrap uni-common-mt">
 				<button type="primary" :disabled="mOtherParam.bLoading"
-					@click="submit('logout')">{{$t('logout')}}</button>
+					@click="submit('logout')">{{$t('me.logout')}}</button>
 			</view>
 		</view>
 	</view>
@@ -45,12 +45,8 @@
 			uni.stopPullDownRefresh();
 		},
 		methods: {
-			$t(_key, _param, _group) {
-				console.log(this.post.language);
-				if (_group === undefined) {
-					_group = 'me';
-				}
-				return fGetTransResult(_key, _param, _group);
+			$t(_formatpath, _param) {
+				return fGetTransResult(_formatpath, _param);
 			},
 			async reload() {
 				try {
