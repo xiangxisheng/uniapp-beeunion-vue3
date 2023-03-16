@@ -22,8 +22,9 @@ export function fGetSesskey() {
 export function showAlert(content) {
 	return new Promise(function(success) {
 		uni.showModal({
-			title: '提示',
+			title: fGetTransResult('common.alertTitle'),
 			content,
+			confirmText: fGetTransResult('common.alertOk'),
 			showCancel: false,
 			success
 		});
@@ -32,8 +33,10 @@ export function showAlert(content) {
 export function showConfirm(content) {
 	return new Promise(function(success) {
 		uni.showModal({
-			title: '提示',
+			title: fGetTransResult('common.confirmTitle'),
 			content,
+			cancelText: fGetTransResult('common.confirmCancel'),
+			confirmText: fGetTransResult('common.confirmOk'),
 			showCancel: true,
 			success: (res) => {
 				success(res.confirm);
@@ -42,7 +45,7 @@ export function showConfirm(content) {
 	});
 }
 export function fRequest(method, path, data) {
-	return new Promise(function(resolve, reject) {
+	return new Promise(function(resolve) {
 		const header = {};
 		header.Sesskey = fGetSesskey();
 		const token = uni.getStorageSync('token');
@@ -63,48 +66,46 @@ export function fRequest(method, path, data) {
 			success: async (res) => {
 				//console.log(res);
 				const mData = res.data;
-				if (mData.message) {
-					const msg = fGetTransResult(mData.message);
-					await showAlert(msg);
-				}
-				if (res.statusCode === 401) {
-					uni.navigateTo({
-						url: '/pages/public/sign',
-					});
-					return reject(401);
-				}
-				if (mData.code !== 0) {
-					return reject(mData.code);
-				}
-				if (mData.result) {
-					if (mData.result.token) {
-						uni.setStorageSync('token', mData.result.token);
-					}
-				}
-				return resolve(mData.result);
+				mData.statusCode = res.statusCode;
+				return resolve(mData);
 			},
 			fail: (mData) => {
 				if (mData.errMsg) {
-					uni.showToast({
-						icon: 'none',
-						title: mData.errMsg,
-					});
+					mData.code = -1;
+					mData.message = mData.errMsg;
+					delete mData.errMsg;
 				}
-				return reject(mData);
+				return resolve(mData);
 			}
 		});
 	});
 };
 export async function request(method, path, data) {
 	uni.showLoading({
-		title: '加载中'
+		title: fGetTransResult('common.loading'),
 	});
-	try {
-		return await fRequest(method, path, data);
-	} catch (e) {
-		throw e;
-	} finally {
-		uni.hideLoading();
+	const mData = await fRequest(method, path, data);
+	uni.hideLoading();
+	if (mData.message) {
+		if (mData.i18n && mData.i18n.param) {
+			mData.message = fGetTransResult(mData.message, mData.i18n.param);
+		}
+		await showAlert(mData.message);
+	}
+	if (mData.statusCode === 401) {
+		uni.navigateTo({
+			url: '/pages/public/sign',
+		});
+		throw 401;
+	}
+	if (mData.code !== 0) {
+		throw mData.code;
+	}
+	if (mData.result) {
+		if (mData.result.token) {
+			uni.setStorageSync('token', mData.result.token);
+		}
+		return mData.result;
 	}
 };
 export function getRequest(path, data) {
