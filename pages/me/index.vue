@@ -35,7 +35,10 @@
 				},
 			}
 		},
-		async onLoad() {
+		async created() {
+			uni.setNavigationBarTitle({
+				title: this.$t('common.title'),
+			});
 			await this.reload();
 		},
 		async onPullDownRefresh() {

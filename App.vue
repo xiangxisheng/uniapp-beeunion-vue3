@@ -1,7 +1,12 @@
 <script>
+	import {
+		fLoad,
+	} from "@/common/i18n.js";
+
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			fLoad();
 		},
 		onShow: function() {
 			console.log('App Show')

@@ -1,3 +1,5 @@
+import pages from '@/pages.json';
+
 function fGetLocaleMap(mConfLocale, mConfLang) {
 	for (const iIndex in window.config.i18n.locales) {
 		const mLocale = window.config.i18n.locales[iIndex];
@@ -73,9 +75,33 @@ export function fGetCurrentLocale() {
 }
 
 export function fSetCurrentLocale(val) {
+	// 设置语言
 	uni.setStorageSync('locale', val);
+	fLoad();
 }
 
 export function fRemoveCurrentLocale() {
+	// 恢复默认语言
 	uni.removeStorageSync('locale');
+	fLoad();
+}
+
+export function fLoad() {
+	// 为tabBar重新加载语言
+	if (0 && pages.globalStyle) {
+		if (pages.globalStyle.navigationBarTitleText) {
+			const title = fGetTransResult(pages.globalStyle.navigationBarTitleText);
+			pages.globalStyle.navigationBarTitleText = title;
+		}
+	}
+	if (pages.tabBar && pages.tabBar.list) {
+		for (const index in pages.tabBar.list) {
+			const item = pages.tabBar.list[index];
+			const tabBarOptions = {
+				index: parseFloat(index),
+				text: fGetTransResult(item.text),
+			}
+			uni.setTabBarItem(tabBarOptions);
+		}
+	}
 }

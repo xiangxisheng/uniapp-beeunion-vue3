@@ -3,12 +3,12 @@
 		{
 			"path": "pages/customer/list",
 			"style": {
-				"navigationBarTitleText": "My Customer",
+				"navigationBarTitleText": "customer.myCustomer",
 				"navigationStyle": "default",
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
-							"text": "New",
+							"text": "customer.newCustomer",
 							"fontSize": "18px",
 							"float": "right"
 						}]
@@ -17,18 +17,13 @@
 			}
 		},
 		{
-			"path": "pages/customer/detail",
-			"style": {
-				"navigationBarTitleText": "Detail Customer"
-			}
+			"path": "pages/customer/detail"
 		},
 		{
-			"path": "pages/me/index",
-			"style": {}
+			"path": "pages/me/index"
 		},
 		{
-			"path": "pages/public/sign",
-			"style": {}
+			"path": "pages/public/sign"
 		}
 	],
 	"tabBar": {
@@ -37,13 +32,13 @@
 		"backgroundColor": "#ffffff",
 		"list": [{
 				"pagePath": "pages/customer/list",
-				"text": "Customer",
+				"text": "customer.myCustomer",
 				"iconPath": "static/img/home.png",
 				"selectedIconPath": "static/img/homeHL.png"
 			},
 			{
 				"pagePath": "pages/me/index",
-				"text": "Me",
+				"text": "me.tabBarText",
 				"iconPath": "static/img/user.png",
 				"selectedIconPath": "static/img/userHL.png"
 			}
@@ -52,7 +47,7 @@
 	"globalStyle": {
 		"enablePullDownRefresh": true,
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "Bee Union",
+		"navigationBarTitleText": "common.title",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},

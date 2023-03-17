@@ -64,9 +64,10 @@
 				aLocales: [],
 			}
 		},
-		async onLoad() {
+		created() {
 			this.post.language = fGetCurrentLocale();
 			this.aLocales = fGetLocales();
+			this.onLocale();
 		},
 		onPullDownRefresh() {
 			//下拉
@@ -75,16 +76,22 @@
 		},
 		methods: {
 			$t(_formatpath, _param) {
-				console.log(this.post.language);
-				return fGetTransResult(_formatpath, _param);
+				return fGetTransResult(_formatpath, _param, this.post.language);
+			},
+			onLocale() {
+				uni.setNavigationBarTitle({
+					title: this.$t('common.title'),
+				});
 			},
 			fResetLocale() {
 				fRemoveCurrentLocale();
 				this.post.language = fGetCurrentLocale();
+				this.onLocale();
 			},
 			languageChange(s) {
 				this.post.language = s.detail.value;
 				fSetCurrentLocale(this.post.language);
+				this.onLocale();
 			},
 			async fetchData() {
 				//alert('fetchData()');
