@@ -77,13 +77,11 @@ export function fGetCurrentLocale() {
 export function fSetCurrentLocale(val) {
 	// 设置语言
 	uni.setStorageSync('locale', val);
-	fLoad();
 }
 
 export function fRemoveCurrentLocale() {
 	// 恢复默认语言
 	uni.removeStorageSync('locale');
-	fLoad();
 }
 
 export function fLoad() {

@@ -37,6 +37,7 @@
 </template>
 <script>
 	import {
+		fLoad,
 		fGetTransResult,
 	} from "@/common/i18n.js";
 	import {
@@ -65,6 +66,9 @@
 				title: this.$t('customer.myCustomer'),
 			});
 			await this.getList();
+		},
+		onShow: function() {
+			fLoad();
 		},
 		onNavigationBarButtonTap(e) {
 			//新增按钮
