@@ -8,8 +8,9 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
-							"text": "customer.newCustomer",
-							"fontSize": "18px",
+							"text": "&#xe676;",
+							"fontSrc": "/components/uni-icons/uniicons.ttf",
+							"fontSize": "64rpx",
 							"float": "right"
 						}]
 					}
