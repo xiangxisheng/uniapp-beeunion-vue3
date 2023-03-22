@@ -44,6 +44,11 @@ export function showConfirm(content) {
 		});
 	});
 }
+export function fGetCurPageRoute() {
+	const aCurPages = getCurrentPages();
+	const sCurPage = aCurPages[aCurPages.length - 1];
+	return sCurPage.route;
+}
 export function fRequest(method, path, data) {
 	return new Promise(function(resolve) {
 		const header = {};
@@ -52,9 +57,14 @@ export function fRequest(method, path, data) {
 		if (token) {
 			header.Authorization = token;
 		} else {
-			uni.navigateTo({
-				url: '/pages/public/sign',
-			});
+			// 未登录状态
+			if (fGetCurPageRoute() !== '/pages/public/sign') {
+				// 当未登录时，不允许在非登录页面请求接口
+				uni.navigateTo({
+					url: '/pages/public/sign',
+				});
+				return resolve();
+			}
 		}
 		const locale = fGetCurrentLocale();
 		const url = `${window.config.api_url}${path}?locale=${locale}`;
@@ -115,8 +125,8 @@ export function postRequest(path, data) {
 	return request('POST', path, data);
 };
 export function navigateBack() {
-	const aCurPages = getCurrentPages();
-	const sCurPageRoute = aCurPages[aCurPages.length - 1].route;
+	// 通常在登录成功后返回操作页面
+	const sCurPageRoute = fGetCurPageRoute();
 	const aPages = getCurrentPages().filter((o) => o.route !== sCurPageRoute);
 	var url = '/';
 	if (aPages.length >= 1) {
