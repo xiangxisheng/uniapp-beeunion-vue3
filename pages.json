@@ -9,7 +9,7 @@
 					"titleNView": {
 						"buttons": [{
 							"text": "&#xe676;",
-							"fontSrc": "/components/uni-icons/uniicons.ttf",
+							"fontSrc": "/static/uniicons.ttf",
 							"fontSize": "64rpx",
 							"float": "right"
 						}]
