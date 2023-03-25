@@ -3,8 +3,6 @@
 		{
 			"path": "pages/customer/list",
 			"style": {
-				"navigationBarTitleText": "customer.myCustomer",
-				"navigationStyle": "default",
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
@@ -19,6 +17,24 @@
 		},
 		{
 			"path": "pages/customer/detail"
+		},
+		{
+			"path": "pages/order/index",
+			"style": {
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "&#xe676;",
+							"fontSrc": "/static/uniicons.ttf",
+							"fontSize": "64rpx",
+							"float": "right"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/order/detail"
 		},
 		{
 			"path": "pages/message/index"
@@ -40,12 +56,20 @@
 				"iconPath": "static/img/home.png",
 				"selectedIconPath": "static/img/homeHL.png"
 			},
+			/*
 			{
 				"pagePath": "pages/message/index",
 				"text": "message.title",
 				"iconPath": "static/img/message.png",
 				"selectedIconPath": "static/img/messageHL.png"
-			},
+			},//*/
+			//*
+			{
+				"pagePath": "pages/order/index",
+				"text": "order.myOrder",
+				"iconPath": "static/img/order.png",
+				"selectedIconPath": "static/img/orderHL.png"
+			}, //*/
 			{
 				"pagePath": "pages/me/index",
 				"text": "me.tabBarText",

@@ -21,16 +21,7 @@
 				</button>
 			</view>
 			<view class="uni-padding-wrap uni-common-mt" v-if="mLoadParam.action === 'edit'">
-				<button type="warn" :disabled="mOtherParam.bLoading"
-					@click="submit('del')">{{$t('customer.delete')}}</button>
-			</view>
-			<view class="uni-padding-wrap uni-common-mt" v-if="0&&mLoadParam.action === 'edit'">
-				<button type="button" :disabled="mOtherParam.bLoading"
-					@click="nav('list')">{{$t('customer.listOrder')}}</button>
-			</view>
-			<view class="uni-padding-wrap uni-common-mt" v-if="mLoadParam.action === 'edit'">
-				<button type="button" :disabled="mOtherParam.bLoading"
-					@click="nav('add')">{{$t('order.newOrder')}}</button>
+				<button type="warn" :disabled="mOtherParam.bLoading" @click="submit('del')">{{$t('customer.delete')}}</button>
 			</view>
 		</view>
 	</view>
@@ -95,7 +86,7 @@
 			async reload() {
 				if (this.mLoadParam.action === 'add') {
 					uni.setNavigationBarTitle({
-						title: this.$t('customer.newCustomer')
+						title: this.$t('order.newOrder')
 					});
 					if (this.mLoadParam.name) {
 						this.mPostData.name = this.mLoadParam.name;
@@ -104,7 +95,7 @@
 				}
 				if (this.mLoadParam.action === 'edit') {
 					uni.setNavigationBarTitle({
-						title: this.$t('customer.editCustomer')
+						title: this.$t('order.editOrder')
 					});
 					const apiResData = await getRequest(this.getUrl('detail'), {});
 					if (typeof(apiResData) === 'object') {
@@ -135,20 +126,6 @@
 					console.log(errno);
 				}
 				this.mOtherParam.bLoading = false;
-			},
-			nav(name) {
-				if (name === 'list') {
-					uni.navigateTo({
-						url: '/pages/order/index?customer_id=' + this.mLoadParam.id,
-					});
-					return;
-				}
-				if (name === 'add') {
-					uni.navigateTo({
-						url: '/pages/order/detail?action=add&customer_id=' + this.mLoadParam.id,
-					});
-					return;
-				}
 			}
 		}
 	}
