@@ -38,9 +38,9 @@
 </template>
 <script>
 	import {
-		fLoad,
-		fGetTransResult,
+		useI18nStore,
 	} from "@/common/i18n.js";
+	const i18n = useI18nStore();
 	import {
 		getRequest
 	} from '@/common/request.js';
@@ -79,7 +79,7 @@
 			await this.getList();
 		},
 		onShow: function() {
-			fLoad();
+			//fLoad();
 		},
 		onNavigationBarButtonTap(e) {
 			//新增按钮
@@ -94,7 +94,7 @@
 		},
 		methods: {
 			$t(_formatpath, _param) {
-				return fGetTransResult(_formatpath, _param);
+				return i18n.fGetTransResult(_formatpath, _param);
 			},
 			async getList() {
 				try {

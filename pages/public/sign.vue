@@ -16,8 +16,8 @@
 			<view class="uni-form-item uni-column">
 				<view class="title">Language / 语言选择</view>
 				<radio-group class="uni-input" @change="languageChange">
-					<label v-for="(item, index) in aLocales" :key="item.locale">
-						<radio :value="item.locale" :checked="item.locale === post.language" />
+					<label v-for="(item, index) in aLocales" :key="item.name">
+						<radio :value="item.name" :checked="item.name === post.language" />
 						{{ item.title }}
 					</label>
 					<a href="javascript:void(0)" @click="fResetLocale()">{{$t('common.resetLocale')}}</a>
@@ -44,12 +44,9 @@
 		showAlert,
 	} from '@/common/request.js';
 	import {
-		fGetTransResult,
-		fGetLocales,
-		fGetCurrentLocale,
-		fSetCurrentLocale,
-		fRemoveCurrentLocale,
+		useI18nStore,
 	} from "@/common/i18n.js";
+	const i18n = useI18nStore();
 	export default {
 		data() {
 			return {
@@ -65,8 +62,8 @@
 			}
 		},
 		created() {
-			this.post.language = fGetCurrentLocale();
-			this.aLocales = fGetLocales();
+			this.post.language = i18n.fGetCurrentLocale();
+			this.aLocales = i18n.fGetLocales();
 			this.onLocale();
 		},
 		onPullDownRefresh() {
@@ -76,7 +73,7 @@
 		},
 		methods: {
 			$t(_formatpath, _param) {
-				return fGetTransResult(_formatpath, _param, this.post.language);
+				return i18n.fGetTransResult(_formatpath, _param, this.post.language);
 			},
 			onLocale() {
 				uni.setNavigationBarTitle({
@@ -84,13 +81,13 @@
 				});
 			},
 			fResetLocale() {
-				fRemoveCurrentLocale();
-				this.post.language = fGetCurrentLocale();
+				i18n.fRemoveCurrentLocale();
+				this.post.language = i18n.fGetCurrentLocale();
 				this.onLocale();
 			},
-			languageChange(s) {
+			async languageChange(s) {
+				await i18n.fSetCurrentLocale(s.detail.value);
 				this.post.language = s.detail.value;
-				fSetCurrentLocale(this.post.language);
 				this.onLocale();
 			},
 			async fetchData() {

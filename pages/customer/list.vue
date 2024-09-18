@@ -1,7 +1,8 @@
 <template>
 	<view class="content">
 		<view class="uni-form-item uni-column">
-			<input class="uni-input" focus :placeholder="$t('customer.search')" v-model="search.name" @input="getList()" />
+			<input class="uni-input" focus :placeholder="$t('customer.search')" v-model="search.name"
+				@input="getList()" />
 		</view>
 		<uni-list>
 			<uni-list-item showArrow clickable @click="navigate_detail_edit(item.id)" v-for="item of apiResData.items"
@@ -37,9 +38,9 @@
 </template>
 <script>
 	import {
-		fLoad,
-		fGetTransResult,
+		useI18nStore,
 	} from "@/common/i18n.js";
+	const i18n = useI18nStore();
 	import {
 		getRequest
 	} from '@/common/request.js';
@@ -68,7 +69,7 @@
 			await this.getList();
 		},
 		onShow: function() {
-			fLoad();
+			//fLoad();
 		},
 		onNavigationBarButtonTap(e) {
 			//新增按钮
@@ -83,7 +84,7 @@
 		},
 		methods: {
 			$t(_formatpath, _param) {
-				return fGetTransResult(_formatpath, _param);
+				return i18n.fGetTransResult(_formatpath, _param);
 			},
 			async getList() {
 				try {

@@ -17,8 +17,9 @@
 
 <script>
 	import {
-		fGetTransResult,
+		useI18nStore,
 	} from "@/common/i18n.js";
+	const i18n = useI18nStore();
 	import {
 		getRequest,
 		postRequest,
@@ -49,7 +50,7 @@
 		},
 		methods: {
 			$t(_formatpath, _param) {
-				return fGetTransResult(_formatpath, _param);
+				return i18n.fGetTransResult(_formatpath, _param);
 			},
 			async reload() {
 				try {

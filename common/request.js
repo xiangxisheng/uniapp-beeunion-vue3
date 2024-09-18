@@ -1,7 +1,7 @@
 import {
-	fGetCurrentLocale,
-	fGetTransResult,
+	useI18nStore,
 } from "@/common/i18n.js";
+const i18n = useI18nStore();
 
 export function fGetTimeWithRand() {
 	//返回一个29位的随机数字（前面13位是时间戳）
@@ -22,9 +22,9 @@ export function fGetSesskey() {
 export function showAlert(content) {
 	return new Promise(function(success) {
 		uni.showModal({
-			title: fGetTransResult('common.alertTitle'),
+			title: i18n.fGetTransResult('common.alertTitle'),
 			content,
-			confirmText: fGetTransResult('common.alertOk'),
+			confirmText: i18n.fGetTransResult('common.alertOk'),
 			showCancel: false,
 			success
 		});
@@ -33,10 +33,10 @@ export function showAlert(content) {
 export function showConfirm(content) {
 	return new Promise(function(success) {
 		uni.showModal({
-			title: fGetTransResult('common.confirmTitle'),
+			title: i18n.fGetTransResult('common.confirmTitle'),
 			content,
-			cancelText: fGetTransResult('common.confirmCancel'),
-			confirmText: fGetTransResult('common.confirmOk'),
+			cancelText: i18n.fGetTransResult('common.confirmCancel'),
+			confirmText: i18n.fGetTransResult('common.confirmOk'),
 			showCancel: true,
 			success: (res) => {
 				success(res.confirm);
@@ -58,7 +58,7 @@ export function fRequest(method, path, data) {
 			header.Authorization = token;
 		} else {
 			// 未登录状态
-			if (fGetCurPageRoute() !== '/pages/public/sign') {
+			if (0 && fGetCurPageRoute() !== '/pages/public/sign') {
 				// 当未登录时，不允许在非登录页面请求接口
 				uni.navigateTo({
 					url: '/pages/public/sign',
@@ -66,7 +66,7 @@ export function fRequest(method, path, data) {
 				return resolve();
 			}
 		}
-		const locale = fGetCurrentLocale();
+		const locale = i18n.fGetCurrentLocale();
 		const url = `${window.config.api_url}${path}?locale=${locale}`;
 		uni.request({
 			url,
@@ -75,8 +75,14 @@ export function fRequest(method, path, data) {
 			method,
 			success: async (res) => {
 				//console.log(res);
+				if (res.statusCode !== 200) {
+					// 非200状态直接提示文本内容
+					return resolve({
+						code: res.statusCode,
+						message: res.data,
+					});
+				}
 				const mData = res.data;
-				mData.statusCode = res.statusCode;
 				return resolve(mData);
 			},
 			fail: (mData) => {
@@ -92,13 +98,13 @@ export function fRequest(method, path, data) {
 };
 export async function request(method, path, data) {
 	uni.showLoading({
-		title: fGetTransResult('common.loading'),
+		title: i18n.fGetTransResult('common.loading'),
 	});
 	const mData = await fRequest(method, path, data);
 	uni.hideLoading();
 	if (mData.message) {
 		if (mData.i18n && mData.i18n.param) {
-			mData.message = fGetTransResult(mData.message, mData.i18n.param);
+			mData.message = i18n.fGetTransResult(mData.message, mData.i18n.param);
 		}
 		await showAlert(mData.message);
 	}

@@ -1,12 +1,16 @@
 <script>
 	import {
-		fLoad,
+		useI18nStore,
 	} from "@/common/i18n.js";
 
 	export default {
-		onLaunch: function() {
+		onLaunch: async function() {
 			console.log('App Launch')
-			fLoad();
+			const i18n = useI18nStore();
+			await i18n.fLoadData();
+			setTimeout(async() => {
+				await i18n.fTransTabBar();
+			}, 200);
 		},
 		onShow: function() {
 			console.log('App Show')
