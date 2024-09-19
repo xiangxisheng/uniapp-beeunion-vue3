@@ -14,7 +14,7 @@
 				<input class="uni-input" placeholder="" v-model="mPostData.remark" />
 			</view>
 			<view class="uni-padding-wrap uni-common-mt">
-				<button type="primary" :disabled="mOtherParam.bLoading" @click="submit()">
+				<button type="primary" :disabled="mOtherParam.bLoading" @click="submit(mLoadParam.action==='add'?'POST':'PUT')">
 					<span v-if="mLoadParam.action === 'add'">{{$t('customer.add')}}</span>
 					<span v-else-if="mLoadParam.action === 'edit'">{{$t('customer.save')}}</span>
 					<span v-else>Submit</span>
@@ -22,7 +22,7 @@
 			</view>
 			<view class="uni-padding-wrap uni-common-mt" v-if="mLoadParam.action === 'edit'">
 				<button type="warn" :disabled="mOtherParam.bLoading"
-					@click="submit('del')">{{$t('customer.delete')}}</button>
+					@click="submit('DELETE')">{{$t('customer.delete')}}</button>
 			</view>
 			<view class="uni-padding-wrap uni-common-mt" v-if="0&&mLoadParam.action === 'edit'">
 				<button type="button" :disabled="mOtherParam.bLoading"
@@ -42,8 +42,7 @@
 	} from "@/common/i18n.js";
 	const i18n = useI18nStore();
 	import {
-		getRequest,
-		postRequest,
+		request,
 		navigateBack,
 		showAlert,
 		showConfirm
@@ -87,10 +86,9 @@
 				if (this.mLoadParam.id) {
 					aUrl.push(this.mLoadParam.id);
 				}
-				if (!_action) {
-					_action = this.mLoadParam.action;
+				if (_action) {
+					aUrl.push(_action);
 				}
-				aUrl.push(_action);
 				return aUrl.join('/');
 			},
 			async reload() {
@@ -107,7 +105,7 @@
 					uni.setNavigationBarTitle({
 						title: this.$t('customer.editCustomer')
 					});
-					const apiResData = await getRequest(this.getUrl('detail'), {});
+					const apiResData = await request('GET', this.getUrl(), {});
 					if (typeof(apiResData) === 'object') {
 						for (const k in this.mPostData) {
 							if (apiResData.hasOwnProperty(k)) {
@@ -118,19 +116,18 @@
 					return;
 				}
 			},
-			async submit(_action) {
-				if (_action === 'del') {
+			async submit(_method) {
+				if (_method === 'DELETE') {
 					if (!await showConfirm(this.$t('customer.deleteConfirm', [this.mPostData.name]))) {
 						return;
 					}
-				} else {
-					if (this.mPostData.name.length < 3) {
-						return showAlert(this.$t('common.cantLessChar', [this.$t('customer.customerName'), 3]));
-					}
+				}
+				if (this.mPostData.name.length < 3) {
+					return showAlert(this.$t('common.cantLessChar', [this.$t('customer.customerName'), 3]));
 				}
 				this.mOtherParam.bLoading = true;
 				try {
-					const result = await postRequest(this.getUrl(_action), this.mPostData);
+					const result = await request(_method, this.getUrl(), this.mPostData);
 					navigateBack();
 				} catch (errno) {
 					console.log(errno);

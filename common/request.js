@@ -79,7 +79,8 @@ export function fRequest(method, path, data) {
 					// 非200状态直接提示文本内容
 					return resolve({
 						code: res.statusCode,
-						message: res.data,
+						message: typeof res.data === 'object' ? JSON.stringify(res.data) :
+							res.data,
 					});
 				}
 				const mData = res.data;

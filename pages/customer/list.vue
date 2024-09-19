@@ -88,7 +88,7 @@
 			},
 			async getList() {
 				try {
-					this.apiResData = await getRequest("/panel/front/customer/list", this.search);
+					this.apiResData = await getRequest("/panel/front/customer", this.search);
 				} catch (e) {
 
 				}

@@ -106,7 +106,7 @@
 				}
 				this.bLoading = true;
 				try {
-					const result = await postRequest('/' + this.action, this.post);
+					const result = await postRequest('/public/' + this.action, this.post);
 					navigateBack();
 				} catch (errno) {
 					console.log(errno);
