@@ -20,12 +20,12 @@
 						</tr>
 						<tr>
 							<td>
-								<span v-if="item.phone">{{ item.phone }}</span>
+								<span v-if="item.detail.phone">{{ item.detail.phone }}</span>
 							</td>
 						</tr>
 						<tr>
 							<td>
-								<span v-if="item.remark">{{ item.remark }}</span>
+								<span v-if="item.detail.remark">{{ item.detail.remark }}</span>
 							</td>
 						</tr>
 					</table>

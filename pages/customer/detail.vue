@@ -7,14 +7,15 @@
 			</view>
 			<view class="uni-form-item uni-column">
 				<view class="title">{{$t('customer.phoneNumber')}}</view>
-				<input class="uni-input" placeholder="" v-model="mPostData.phone" />
+				<input class="uni-input" placeholder="" v-model="mPostData.detail.phone" />
 			</view>
 			<view class="uni-form-item uni-column">
 				<view class="title">{{$t('customer.remark')}}</view>
-				<input class="uni-input" placeholder="" v-model="mPostData.remark" />
+				<input class="uni-input" placeholder="" v-model="mPostData.detail.remark" />
 			</view>
 			<view class="uni-padding-wrap uni-common-mt">
-				<button type="primary" :disabled="mOtherParam.bLoading" @click="submit(mLoadParam.action==='add'?'POST':'PUT')">
+				<button type="primary" :disabled="mOtherParam.bLoading"
+					@click="submit(mLoadParam.action==='add'?'POST':'PUT')">
 					<span v-if="mLoadParam.action === 'add'">{{$t('customer.add')}}</span>
 					<span v-else-if="mLoadParam.action === 'edit'">{{$t('customer.save')}}</span>
 					<span v-else>Submit</span>
@@ -57,8 +58,7 @@
 				},
 				mPostData: {
 					name: '',
-					phone: '',
-					remark: '',
+					detail: {},
 				},
 				mOtherParam: {
 					bLoading: false,
